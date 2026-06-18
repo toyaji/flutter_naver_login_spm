@@ -1,4 +1,4 @@
-# flutter_naver_login
+# flutter_naver_login_spm
 [![Build Status](https://img.shields.io/badge/pub-v2.1.1-success.svg)](https://pub.dev/packages/flutter_naver_login)
 [![Build Status](https://img.shields.io/badge/naverAosSDK-v5.10.0-success.svg)](https://github.com/naver/naveridlogin-sdk-android)
 [![Build Status](https://img.shields.io/badge/naverIosSDK-v5.0.0-success.svg)](https://github.com/naver/naveridlogin-sdk-ios-swift)
@@ -13,6 +13,21 @@ A Flutter plugin for using the native Naver Login SDKs on Android and iOS.
 ## Migration 
 [from pre-2.1.0 to 2.1.0](#migration-guide).
 
+## 📌 Fork Background & Purpose
+
+This repository is a **dedicated fork** of [yoonjaepark/flutter_naver_login](https://github.com/yoonjaepark/flutter_naver_login). 
+
+### Why this Fork exists?
+* **2026 CocoaPods Deprecation Response**: Apple and the Flutter ecosystem are phasing out CocoaPods (switching to read-only mode by the end of 2026). This plugin is refactored to fully support **Swift Package Manager (SPM)** native dependency mapping on iOS.
+* **Xcode Build Speed Optimization**: Mixing CocoaPods and SPM in large projects (such as Zelly) invalidates the Xcode incremental build cache, causing significant compilation bottlenecks (often over 170 seconds). By transitioning this package to SPM, we restore build caching functionality.
+* **Active Community Maintenance**: As the original repository lacks frequent updates, this fork ensures compatibility with the latest Flutter stable versions and native SDK revisions.
+
+## 📚 Onboarding & AI Guidelines
+This repository contains specialized documentation for developers and AI agents:
+- [ONBOARDING.md](ONBOARDING.md): Step-by-step local setup, Naver Console setup, and local example project configuration.
+- [AI_RULES.md](AI_RULES.md): Strict development rules, Xcode build cache safety guidelines, and self-verification flows for AI agents (Gemini, Claude, GPT, etc.).
+- [SPM_INTEGRATION_STANDARDS.md](docs/SPM_INTEGRATION_STANDARDS.md): Technical specifications of the Swift Package Manager (SPM) bridge architecture and clean-up guides.
+
 ## Installation
 
 ### 1. Add dependency
@@ -20,7 +35,7 @@ Add the following to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_naver_login: ^2.1.0
+  flutter_naver_login_spm: ^2.1.0
 ```
 
 ### 2. Platform Setup
@@ -344,9 +359,15 @@ try {
 2. **Proguard Issues**
    - Solution: Add the provided Proguard rules to your `proguard-rules.pro` file
 
-## Contributing
+## 🤝 Contributing & AI Agent Collaboration
 
-Feel free to contribute to this project by submitting issues or pull requests.
+This project is open-source and actively welcomes contributions from both **human developers** and **AI agents** (Gemini, Claude, GPT, etc.). 
+
+Please refer to our **[CONTRIBUTING.md](CONTRIBUTING.md)** for detailed instructions on:
+* Environment setup and self-verification flows.
+* Specialized build warnings and constraints for AI agents.
+* Automated testing and GitHub Actions CI pipelines.
+* Code review and pull request approval workflows.
 
 ## License
 
