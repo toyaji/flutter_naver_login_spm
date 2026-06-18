@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, deprecated_member_use, prefer_interpolation_to_compose_strings, depend_on_referenced_packages
+// ignore_for_file: avoid_print
 
 import 'dart:io';
 import 'package:path/path.dart' as path;
@@ -161,17 +161,29 @@ def naverClientSecret = localProperties.getProperty('naver.client_secret') ?: ""
 
       // Add new meta-data elements
       final newElements = [
-        XmlElement(XmlName('meta-data'), [
-          XmlAttribute(XmlName('android:name'), 'com.naver.sdk.clientId'),
-          XmlAttribute(XmlName('android:value'), clientId),
+        XmlElement(XmlName.qualified('meta-data'), [
+          XmlAttribute(
+            XmlName.qualified('android:name'),
+            'com.naver.sdk.clientId',
+          ),
+          XmlAttribute(XmlName.qualified('android:value'), clientId),
         ]),
-        XmlElement(XmlName('meta-data'), [
-          XmlAttribute(XmlName('android:name'), 'com.naver.sdk.clientSecret'),
-          XmlAttribute(XmlName('android:value'), '@string/client_secret'),
+        XmlElement(XmlName.qualified('meta-data'), [
+          XmlAttribute(
+            XmlName.qualified('android:name'),
+            'com.naver.sdk.clientSecret',
+          ),
+          XmlAttribute(
+            XmlName.qualified('android:value'),
+            '@string/client_secret',
+          ),
         ]),
-        XmlElement(XmlName('meta-data'), [
-          XmlAttribute(XmlName('android:name'), 'com.naver.sdk.clientName'),
-          XmlAttribute(XmlName('android:value'), appName),
+        XmlElement(XmlName.qualified('meta-data'), [
+          XmlAttribute(
+            XmlName.qualified('android:name'),
+            'com.naver.sdk.clientName',
+          ),
+          XmlAttribute(XmlName.qualified('android:value'), appName),
         ]),
       ];
 

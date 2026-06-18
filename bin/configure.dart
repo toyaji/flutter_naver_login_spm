@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, deprecated_member_use, prefer_interpolation_to_compose_strings, depend_on_referenced_packages, unnecessary_brace_in_string_interps
+// ignore_for_file: avoid_print
 
 import 'dart:io';
 import 'package:args/args.dart';
@@ -94,7 +94,7 @@ void main(List<String> arguments) async {
 
 Future<bool> askUser(String promptMessage) async {
   while (true) {
-    stdout.write('\n⚠️ ${promptMessage} (y/N): ');
+    stdout.write('\n⚠️ $promptMessage (y/N): ');
     final response = stdin.readLineSync()?.trim().toLowerCase();
     if (response == 'y' || response == 'yes') {
       return true;

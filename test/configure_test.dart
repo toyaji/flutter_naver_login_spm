@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, deprecated_member_use, prefer_interpolation_to_compose_strings, depend_on_referenced_packages
+// ignore_for_file: avoid_print
 
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';

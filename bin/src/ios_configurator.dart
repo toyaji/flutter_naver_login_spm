@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, deprecated_member_use, prefer_interpolation_to_compose_strings, depend_on_referenced_packages
+// ignore_for_file: avoid_print
 
 import 'dart:io';
 import 'package:path/path.dart' as path;
@@ -35,7 +35,7 @@ Future<bool> configureIOS({
     String gitignoreContent = gitignoreFile.readAsStringSync();
     if (!gitignoreContent.contains('Flutter/NaverKeys.xcconfig')) {
       gitignoreFile.writeAsStringSync(
-        gitignoreContent + '\n# Secret API Keys\nFlutter/NaverKeys.xcconfig\n',
+        '$gitignoreContent\n# Secret API Keys\nFlutter/NaverKeys.xcconfig\n',
       );
       print('  [OK] Added NaverKeys.xcconfig to ios/.gitignore');
     }
@@ -49,7 +49,7 @@ Future<bool> configureIOS({
     if (configFile.existsSync()) {
       String content = configFile.readAsStringSync();
       if (!content.contains('NaverKeys.xcconfig')) {
-        content = '#include? "NaverKeys.xcconfig"\n' + content;
+        content = '#include? "NaverKeys.xcconfig"\n$content';
         configFile.writeAsStringSync(content);
         print('  [OK] Included NaverKeys.xcconfig in $configName');
       }
@@ -120,38 +120,40 @@ Future<bool> configureIOS({
       // Append new keys
       rootDict.children.add(XmlText('\n\t'));
       rootDict.children.add(
-        XmlElement(XmlName('key'), [], [XmlText('NidClientID')]),
+        XmlElement(XmlName.qualified('key'), [], [XmlText('NidClientID')]),
       );
       rootDict.children.add(XmlText('\n\t'));
       rootDict.children.add(
-        XmlElement(XmlName('string'), [], [XmlText(clientId)]),
-      );
-
-      rootDict.children.add(XmlText('\n\t'));
-      rootDict.children.add(
-        XmlElement(XmlName('key'), [], [XmlText('NidClientSecret')]),
-      );
-      rootDict.children.add(XmlText('\n\t'));
-      rootDict.children.add(
-        XmlElement(XmlName('string'), [], [XmlText('\$(NAVER_CLIENT_SECRET)')]),
+        XmlElement(XmlName.qualified('string'), [], [XmlText(clientId)]),
       );
 
       rootDict.children.add(XmlText('\n\t'));
       rootDict.children.add(
-        XmlElement(XmlName('key'), [], [XmlText('NidAppName')]),
+        XmlElement(XmlName.qualified('key'), [], [XmlText('NidClientSecret')]),
       );
       rootDict.children.add(XmlText('\n\t'));
       rootDict.children.add(
-        XmlElement(XmlName('string'), [], [XmlText(appName)]),
+        XmlElement(XmlName.qualified('string'), [], [
+          XmlText('\$(NAVER_CLIENT_SECRET)'),
+        ]),
       );
 
       rootDict.children.add(XmlText('\n\t'));
       rootDict.children.add(
-        XmlElement(XmlName('key'), [], [XmlText('NidUrlScheme')]),
+        XmlElement(XmlName.qualified('key'), [], [XmlText('NidAppName')]),
       );
       rootDict.children.add(XmlText('\n\t'));
       rootDict.children.add(
-        XmlElement(XmlName('string'), [], [XmlText(urlScheme)]),
+        XmlElement(XmlName.qualified('string'), [], [XmlText(appName)]),
+      );
+
+      rootDict.children.add(XmlText('\n\t'));
+      rootDict.children.add(
+        XmlElement(XmlName.qualified('key'), [], [XmlText('NidUrlScheme')]),
+      );
+      rootDict.children.add(XmlText('\n\t'));
+      rootDict.children.add(
+        XmlElement(XmlName.qualified('string'), [], [XmlText(urlScheme)]),
       );
       rootDict.children.add(XmlText('\n'));
 
@@ -168,16 +170,20 @@ Future<bool> configureIOS({
       if (queryKey == null) {
         rootDict.children.add(XmlText('\t'));
         rootDict.children.add(
-          XmlElement(XmlName('key'), [], [
+          XmlElement(XmlName.qualified('key'), [], [
             XmlText('LSApplicationQueriesSchemes'),
           ]),
         );
         rootDict.children.add(XmlText('\n\t'));
-        final arrayNode = XmlElement(XmlName('array'), [], [
+        final arrayNode = XmlElement(XmlName.qualified('array'), [], [
           XmlText('\n\t\t'),
-          XmlElement(XmlName('string'), [], [XmlText('naversearchapp')]),
+          XmlElement(XmlName.qualified('string'), [], [
+            XmlText('naversearchapp'),
+          ]),
           XmlText('\n\t\t'),
-          XmlElement(XmlName('string'), [], [XmlText('naversearchthirdlogin')]),
+          XmlElement(XmlName.qualified('string'), [], [
+            XmlText('naversearchthirdlogin'),
+          ]),
           XmlText('\n\t'),
         ]);
         rootDict.children.add(arrayNode);
@@ -193,14 +199,16 @@ Future<bool> configureIOS({
           if (!existingStrings.contains('naversearchapp')) {
             arraySibling.children.add(XmlText('\t\t'));
             arraySibling.children.add(
-              XmlElement(XmlName('string'), [], [XmlText('naversearchapp')]),
+              XmlElement(XmlName.qualified('string'), [], [
+                XmlText('naversearchapp'),
+              ]),
             );
             arraySibling.children.add(XmlText('\n\t'));
           }
           if (!existingStrings.contains('naversearchthirdlogin')) {
             arraySibling.children.add(XmlText('\t\t'));
             arraySibling.children.add(
-              XmlElement(XmlName('string'), [], [
+              XmlElement(XmlName.qualified('string'), [], [
                 XmlText('naversearchthirdlogin'),
               ]),
             );
