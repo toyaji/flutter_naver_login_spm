@@ -132,9 +132,9 @@ def naverClientSecret = localProperties.getProperty('naver.client_secret') ?: ""
 
       final application = applicationNodes.first;
 
-      // Find existing meta-data nodes for Naver SDK
+      // Find existing meta-data nodes for Naver SDK anywhere in application
       final existingMetaDatas =
-          application.findElements('meta-data').where((node) {
+          application.findAllElements('meta-data').where((node) {
             final name = node.getAttribute('android:name');
             return name == 'com.naver.sdk.clientId' ||
                 name == 'com.naver.sdk.clientSecret' ||
@@ -155,7 +155,29 @@ def naverClientSecret = localProperties.getProperty('naver.client_secret') ?: ""
         }
         // Remove existing to replace them safely
         for (var node in existingMetaDatas) {
-          node.parent?.children.remove(node);
+          final parent = node.parent;
+          if (parent != null) {
+            final index = parent.children.indexOf(node);
+            if (index > 0 && parent.children[index - 1] is XmlText && parent.children[index - 1].value?.trim().isEmpty == true) {
+              parent.children.removeAt(index - 1);
+            }
+            parent.children.remove(node);
+          }
+        }
+
+        // Remove existing comments to prevent duplicates
+        final existingComments = application.descendants
+            .where((n) => n is XmlComment && n.value.contains('네이버 로그인 설정'))
+            .toList();
+        for (var comment in existingComments) {
+          final parent = comment.parent;
+          if (parent != null) {
+            final index = parent.children.indexOf(comment);
+            if (index > 0 && parent.children[index - 1] is XmlText && parent.children[index - 1].value?.trim().isEmpty == true) {
+              parent.children.removeAt(index - 1);
+            }
+            parent.children.remove(comment);
+          }
         }
       }
 
@@ -188,11 +210,15 @@ def naverClientSecret = localProperties.getProperty('naver.client_secret') ?: ""
       ];
 
       // Format them a bit for readability
+      int insertIndex = 0;
+      application.children.insert(insertIndex++, XmlText('\n        '));
+      application.children.insert(insertIndex++, XmlComment(' 네이버 로그인 설정 '));
+      
       for (var element in newElements) {
-        application.children.insert(0, XmlText('\n        '));
-        application.children.insert(1, element);
+        application.children.insert(insertIndex++, XmlText('\n        '));
+        application.children.insert(insertIndex++, element);
       }
-      application.children.insert(2, XmlText('\n'));
+      application.children.insert(insertIndex++, XmlText('\n'));
 
       manifestFile.writeAsStringSync(document.toXmlString(pretty: false));
       stdout.writeln('  [OK] Updated android/app/src/main/AndroidManifest.xml');
