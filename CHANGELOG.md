@@ -1,3 +1,12 @@
+## 3.0.0
+* **New Package Name**: Renamed to `naver_login_flutter` and officially separated from the unmaintained `flutter_naver_login`. (Note: You must update all your `import` statements!)
+* **SPM Support**: Migrated iOS to support both Swift Package Manager (SPM) and CocoaPods dual support structure.
+* **SDK Bump**: Updated Naver Login SDKs (Android v5.11.2, iOS v5.1.0).
+* **Legacy Issues Resolved**: Migrated deprecated `NaverIdLoginSDK` to `NidOAuthCallback`, fixing various long-standing legacy iOS bugs (including #92, #86, #70, #130 from the original repo).
+* **Behavior Changes**: Fixed iOS default login behavior and login state removal issues on entering background.
+* **Tests & CI**: Added comprehensive unit test coverage (>90%) for data models and `MethodChannel` logic. Added GitHub Actions CI pipeline to enforce SPM build stability and code quality.
+* **Documentation**: Added comprehensive project documentation, onboarding guides, and AI rules for the SPM transition.
+
 ## 2.1.1
 * iOS migration guide updates
   * Added detailed migration steps from pre-2.1.0 to 2.1.0
