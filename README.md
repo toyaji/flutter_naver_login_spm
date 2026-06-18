@@ -26,7 +26,7 @@ This repository is a **dedicated fork** of [yoonjaepark/flutter_naver_login](htt
 This repository contains specialized documentation for developers and AI agents:
 - [ONBOARDING.md](ONBOARDING.md): Step-by-step local setup, Naver Console setup, and local example project configuration.
 - [AI_RULES.md](AI_RULES.md): Strict development rules, Xcode build cache safety guidelines, and self-verification flows for AI agents (Gemini, Claude, GPT, etc.).
-- [SPM_INTEGRATION_STANDARDS.md](docs/SPM_INTEGRATION_STANDARDS.md): Technical specifications of the Swift Package Manager (SPM) bridge architecture and clean-up guides.
+- [SPM_INTEGRATION_STANDARDS.md](doc/SPM_INTEGRATION_STANDARDS.md): Technical specifications of the Swift Package Manager (SPM) bridge architecture and clean-up guides.
 
 ## Installation
 
