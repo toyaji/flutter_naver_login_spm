@@ -24,7 +24,14 @@ jobs:
           cd example && flutter pub get
 
       - name: Format
-        run: dart format --set-exit-if-changed lib/ test/ example/
+        run: dart format --set-exit-if-changed lib/ test/ example/ bin/
+
+      - name: Prevent lint ignores
+        run: |
+          if grep -rnw 'lib/' 'bin/' 'test/' -e 'ignore_for_file'; then
+            echo "::error::Using 'ignore_for_file' to bypass lint rules is strictly prohibited. Please fix the underlying lint issues."
+            exit 1
+          fi
 
       - name: Analyze
         run: flutter analyze
