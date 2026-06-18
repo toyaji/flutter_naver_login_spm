@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_print
 
 import 'dart:io';
 import 'package:path/path.dart' as path;
@@ -28,9 +27,9 @@ Future<bool> configureAndroid({
       content += '\nnaver.client_secret=$clientSecret\n';
     }
     localPropFile.writeAsStringSync(content);
-    print('  [OK] Updated android/local.properties');
+    stdout.writeln('  [OK] Updated android/local.properties');
   } else {
-    print(
+    stdout.writeln(
       '  [WARN] android/local.properties not found. Please ensure you are running this in a Flutter project root.',
     );
     success = false;
@@ -101,9 +100,9 @@ def naverClientSecret = localProperties.getProperty('naver.client_secret') ?: ""
     }
 
     targetGradle.writeAsStringSync(gradleContent);
-    print('  [OK] Updated \${targetGradle.path}');
+    stdout.writeln('  [OK] Updated \${targetGradle.path}');
   } else {
-    print(
+    stdout.writeln(
       '  [WARN] android/app/build.gradle(.kts) not found. Skipping gradle configuration.',
     );
     success = false;
@@ -126,7 +125,7 @@ def naverClientSecret = localProperties.getProperty('naver.client_secret') ?: ""
       final applicationNodes = document.findAllElements('application');
 
       if (applicationNodes.isEmpty) {
-        print(
+        stdout.writeln(
           '  [WARN] <application> tag not found in AndroidManifest.xml. Skipping manifest configuration.',
         );
         return false;
@@ -149,7 +148,7 @@ def naverClientSecret = localProperties.getProperty('naver.client_secret') ?: ""
             'Naver configuration already exists in AndroidManifest.xml. Do you want to overwrite it?',
           );
           if (!overwrite) {
-            print('  [SKIP] Left existing AndroidManifest.xml intact.');
+            stdout.writeln('  [SKIP] Left existing AndroidManifest.xml intact.');
             return success;
           }
         }
@@ -195,13 +194,13 @@ def naverClientSecret = localProperties.getProperty('naver.client_secret') ?: ""
       application.children.insert(2, XmlText('\n'));
 
       manifestFile.writeAsStringSync(document.toXmlString(pretty: false));
-      print('  [OK] Updated android/app/src/main/AndroidManifest.xml');
+      stdout.writeln('  [OK] Updated android/app/src/main/AndroidManifest.xml');
     } catch (e) {
-      print('  [ERROR] Failed to parse AndroidManifest.xml safely: \$e');
+      stdout.writeln('  [ERROR] Failed to parse AndroidManifest.xml safely: \$e');
       success = false;
     }
   } else {
-    print(
+    stdout.writeln(
       '  [WARN] android/app/src/main/AndroidManifest.xml not found. Skipping manifest configuration.',
     );
     success = false;

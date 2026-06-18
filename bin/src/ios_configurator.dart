@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_print
 
 import 'dart:io';
 import 'package:path/path.dart' as path;
@@ -17,7 +16,7 @@ Future<bool> configureIOS({
   // 1. Create NaverKeys.xcconfig
   final keysDir = Directory(path.join(projectDir, 'ios', 'Flutter'));
   if (!keysDir.existsSync()) {
-    print(
+    stdout.writeln(
       '  [WARN] ios/Flutter directory not found. Skipping iOS configuration.',
     );
     return false;
@@ -27,7 +26,7 @@ Future<bool> configureIOS({
     path.join(projectDir, 'ios', 'Flutter', 'NaverKeys.xcconfig'),
   );
   xcconfigFile.writeAsStringSync('NAVER_CLIENT_SECRET = $clientSecret\n');
-  print('  [OK] Created ios/Flutter/NaverKeys.xcconfig');
+  stdout.writeln('  [OK] Created ios/Flutter/NaverKeys.xcconfig');
 
   // 2. Update .gitignore
   final gitignoreFile = File(path.join(projectDir, 'ios', '.gitignore'));
@@ -37,7 +36,7 @@ Future<bool> configureIOS({
       gitignoreFile.writeAsStringSync(
         '$gitignoreContent\n# Secret API Keys\nFlutter/NaverKeys.xcconfig\n',
       );
-      print('  [OK] Added NaverKeys.xcconfig to ios/.gitignore');
+      stdout.writeln('  [OK] Added NaverKeys.xcconfig to ios/.gitignore');
     }
   }
 
@@ -51,10 +50,10 @@ Future<bool> configureIOS({
       if (!content.contains('NaverKeys.xcconfig')) {
         content = '#include? "NaverKeys.xcconfig"\n$content';
         configFile.writeAsStringSync(content);
-        print('  [OK] Included NaverKeys.xcconfig in $configName');
+        stdout.writeln('  [OK] Included NaverKeys.xcconfig in $configName');
       }
     } else {
-      print('  [WARN] ios/Flutter/$configName not found.');
+      stdout.writeln('  [WARN] ios/Flutter/$configName not found.');
       success = false;
     }
   }
@@ -67,7 +66,7 @@ Future<bool> configureIOS({
       final dictNodes = document.findAllElements('dict');
 
       if (dictNodes.isEmpty) {
-        print(
+        stdout.writeln(
           '  [WARN] <dict> tag not found in Info.plist. Skipping manifest configuration.',
         );
         return false;
@@ -95,7 +94,7 @@ Future<bool> configureIOS({
             'Naver configuration already exists in Info.plist. Do you want to overwrite it?',
           );
           if (!overwrite) {
-            print('  [SKIP] Left existing Info.plist intact.');
+            stdout.writeln('  [SKIP] Left existing Info.plist intact.');
             return success;
           }
         }
@@ -218,13 +217,13 @@ Future<bool> configureIOS({
       }
 
       plistFile.writeAsStringSync(document.toXmlString(pretty: false));
-      print('  [OK] Updated ios/Runner/Info.plist');
+      stdout.writeln('  [OK] Updated ios/Runner/Info.plist');
     } catch (e) {
-      print('  [ERROR] Failed to parse Info.plist safely: \$e');
+      stdout.writeln('  [ERROR] Failed to parse Info.plist safely: \$e');
       success = false;
     }
   } else {
-    print(
+    stdout.writeln(
       '  [WARN] ios/Runner/Info.plist not found. Skipping Info.plist configuration.',
     );
     success = false;

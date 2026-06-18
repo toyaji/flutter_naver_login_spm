@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_print
 
 import 'dart:io';
 import 'package:args/args.dart';
@@ -22,12 +21,12 @@ void main(List<String> arguments) async {
   final ArgResults argResults = parser.parse(arguments);
 
   if (argResults['help'] == true) {
-    print('Usage: dart run naver_login_flutter:configure [arguments]');
-    print(parser.usage);
+    stdout.writeln('Usage: dart run naver_login_flutter:configure [arguments]');
+    stdout.writeln(parser.usage);
     return;
   }
 
-  print('🚀 Starting naver_login_flutter automatic configuration...\n');
+  stdout.writeln('🚀 Starting naver_login_flutter automatic configuration...\n');
 
   String? appName = argResults['app-name'];
   String? clientId = argResults['client-id'];
@@ -62,11 +61,11 @@ void main(List<String> arguments) async {
       clientSecret.isEmpty ||
       urlScheme == null ||
       urlScheme.isEmpty) {
-    print('\n❌ Error: All fields are required. Setup aborted.');
+    stdout.writeln('\n❌ Error: All fields are required. Setup aborted.');
     exit(1);
   }
 
-  print('\n⏳ Configuring Android...');
+  stdout.writeln('\n⏳ Configuring Android...');
   final androidSuccess = await configureAndroid(
     appName: appName,
     clientId: clientId,
@@ -74,7 +73,7 @@ void main(List<String> arguments) async {
     askUser: askUser,
   );
 
-  print('\n⏳ Configuring iOS...');
+  stdout.writeln('\n⏳ Configuring iOS...');
   final iosSuccess = await configureIOS(
     appName: appName,
     clientId: clientId,
@@ -84,9 +83,9 @@ void main(List<String> arguments) async {
   );
 
   if (androidSuccess && iosSuccess) {
-    print('\n✅ Configuration completed successfully!');
+    stdout.writeln('\n✅ Configuration completed successfully!');
   } else {
-    print(
+    stdout.writeln(
       '\n⚠️ Configuration finished with some warnings. Please check the logs above and manual setup documentation if needed.',
     );
   }
