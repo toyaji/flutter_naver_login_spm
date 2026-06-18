@@ -1,15 +1,23 @@
+// ignore_for_file: avoid_print, deprecated_member_use, prefer_interpolation_to_compose_strings, depend_on_referenced_packages, unnecessary_brace_in_string_interps
+
 import 'dart:io';
 import 'package:args/args.dart';
 import 'src/android_configurator.dart';
 import 'src/ios_configurator.dart';
 
 void main(List<String> arguments) async {
-  final parser = ArgParser()
-    ..addOption('app-name', abbr: 'n', help: 'Naver App Name')
-    ..addOption('client-id', abbr: 'i', help: 'Naver Client ID')
-    ..addOption('client-secret', abbr: 's', help: 'Naver Client Secret')
-    ..addOption('url-scheme', abbr: 'u', help: 'iOS URL Scheme')
-    ..addFlag('help', abbr: 'h', negatable: false, help: 'Print this usage information.');
+  final parser =
+      ArgParser()
+        ..addOption('app-name', abbr: 'n', help: 'Naver App Name')
+        ..addOption('client-id', abbr: 'i', help: 'Naver Client ID')
+        ..addOption('client-secret', abbr: 's', help: 'Naver Client Secret')
+        ..addOption('url-scheme', abbr: 'u', help: 'iOS URL Scheme')
+        ..addFlag(
+          'help',
+          abbr: 'h',
+          negatable: false,
+          help: 'Print this usage information.',
+        );
 
   final ArgResults argResults = parser.parse(arguments);
 
@@ -46,10 +54,14 @@ void main(List<String> arguments) async {
     urlScheme = stdin.readLineSync()?.trim();
   }
 
-  if (appName == null || appName.isEmpty ||
-      clientId == null || clientId.isEmpty ||
-      clientSecret == null || clientSecret.isEmpty ||
-      urlScheme == null || urlScheme.isEmpty) {
+  if (appName == null ||
+      appName.isEmpty ||
+      clientId == null ||
+      clientId.isEmpty ||
+      clientSecret == null ||
+      clientSecret.isEmpty ||
+      urlScheme == null ||
+      urlScheme.isEmpty) {
     print('\n❌ Error: All fields are required. Setup aborted.');
     exit(1);
   }
@@ -74,7 +86,9 @@ void main(List<String> arguments) async {
   if (androidSuccess && iosSuccess) {
     print('\n✅ Configuration completed successfully!');
   } else {
-    print('\n⚠️ Configuration finished with some warnings. Please check the logs above and manual setup documentation if needed.');
+    print(
+      '\n⚠️ Configuration finished with some warnings. Please check the logs above and manual setup documentation if needed.',
+    );
   }
 }
 
@@ -84,7 +98,10 @@ Future<bool> askUser(String promptMessage) async {
     final response = stdin.readLineSync()?.trim().toLowerCase();
     if (response == 'y' || response == 'yes') {
       return true;
-    } else if (response == 'n' || response == 'no' || response == null || response.isEmpty) {
+    } else if (response == 'n' ||
+        response == 'no' ||
+        response == null ||
+        response.isEmpty) {
       return false;
     }
   }

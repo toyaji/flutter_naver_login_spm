@@ -40,7 +40,8 @@ void main() {
 
     test('isValid should return true if expiresAt is in the future', () {
       // Create a token with a future date
-      final futureDate = DateTime.now().add(const Duration(days: 1)).toIso8601String();
+      final futureDate =
+          DateTime.now().add(const Duration(days: 1)).toIso8601String();
       final token = NaverToken(
         accessToken: 'access',
         refreshToken: 'refresh',
@@ -53,7 +54,8 @@ void main() {
 
     test('isValid should return false if expiresAt is in the past', () {
       // Create a token with a past date
-      final pastDate = DateTime.now().subtract(const Duration(days: 1)).toIso8601String();
+      final pastDate =
+          DateTime.now().subtract(const Duration(days: 1)).toIso8601String();
       final token = NaverToken(
         accessToken: 'access',
         refreshToken: 'refresh',

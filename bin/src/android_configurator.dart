@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, deprecated_member_use, prefer_interpolation_to_compose_strings, depend_on_referenced_packages
+
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:xml/xml.dart';
@@ -12,24 +14,35 @@ Future<bool> configureAndroid({
   bool success = true;
 
   // 1. Update local.properties
-  final localPropFile = File(path.join(projectDir, 'android', 'local.properties'));
+  final localPropFile = File(
+    path.join(projectDir, 'android', 'local.properties'),
+  );
   if (localPropFile.existsSync()) {
     String content = localPropFile.readAsStringSync();
     if (content.contains('naver.client_secret=')) {
-      content = content.replaceAll(RegExp(r'naver\.client_secret=.*'), 'naver.client_secret=$clientSecret');
+      content = content.replaceAll(
+        RegExp(r'naver\.client_secret=.*'),
+        'naver.client_secret=$clientSecret',
+      );
     } else {
       content += '\nnaver.client_secret=$clientSecret\n';
     }
     localPropFile.writeAsStringSync(content);
     print('  [OK] Updated android/local.properties');
   } else {
-    print('  [WARN] android/local.properties not found. Please ensure you are running this in a Flutter project root.');
+    print(
+      '  [WARN] android/local.properties not found. Please ensure you are running this in a Flutter project root.',
+    );
     success = false;
   }
 
   // 2. Update build.gradle or build.gradle.kts
-  final buildGradle = File(path.join(projectDir, 'android', 'app', 'build.gradle'));
-  final buildGradleKts = File(path.join(projectDir, 'android', 'app', 'build.gradle.kts'));
+  final buildGradle = File(
+    path.join(projectDir, 'android', 'app', 'build.gradle'),
+  );
+  final buildGradleKts = File(
+    path.join(projectDir, 'android', 'app', 'build.gradle.kts'),
+  );
   File? targetGradle;
 
   if (buildGradle.existsSync()) {
@@ -44,8 +57,9 @@ Future<bool> configureAndroid({
 
     // Check if properties loader is already there
     if (!gradleContent.contains('naver.client_secret')) {
-      final propertiesSnippet = isKts
-          ? '''
+      final propertiesSnippet =
+          isKts
+              ? '''
 import java.util.Properties
 
 val localProperties = Properties()
@@ -57,7 +71,7 @@ if (localPropertiesFile.exists()) {
 val naverClientSecret = localProperties.getProperty("naver.client_secret") ?: ""
 
 '''
-          : '''
+              : '''
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -75,48 +89,65 @@ def naverClientSecret = localProperties.getProperty('naver.client_secret') ?: ""
 
     // Insert resValue into defaultConfig
     if (!gradleContent.contains('resValue("string", "client_secret"')) {
-      final resValueSnippet = isKts
-          ? '\n        resValue("string", "client_secret", naverClientSecret.toString())'
-          : '\n        resValue "string", "client_secret", naverClientSecret';
-          
+      final resValueSnippet =
+          isKts
+              ? '\n        resValue("string", "client_secret", naverClientSecret.toString())'
+              : '\n        resValue "string", "client_secret", naverClientSecret';
+
       gradleContent = gradleContent.replaceFirst(
         RegExp(r'defaultConfig\s*\{'),
-        'defaultConfig {$resValueSnippet'
+        'defaultConfig {$resValueSnippet',
       );
     }
-    
+
     targetGradle.writeAsStringSync(gradleContent);
     print('  [OK] Updated \${targetGradle.path}');
   } else {
-    print('  [WARN] android/app/build.gradle(.kts) not found. Skipping gradle configuration.');
+    print(
+      '  [WARN] android/app/build.gradle(.kts) not found. Skipping gradle configuration.',
+    );
     success = false;
   }
 
   // 3. Update AndroidManifest.xml safely with xml package
-  final manifestFile = File(path.join(projectDir, 'android', 'app', 'src', 'main', 'AndroidManifest.xml'));
+  final manifestFile = File(
+    path.join(
+      projectDir,
+      'android',
+      'app',
+      'src',
+      'main',
+      'AndroidManifest.xml',
+    ),
+  );
   if (manifestFile.existsSync()) {
     try {
       final document = XmlDocument.parse(manifestFile.readAsStringSync());
       final applicationNodes = document.findAllElements('application');
 
       if (applicationNodes.isEmpty) {
-        print('  [WARN] <application> tag not found in AndroidManifest.xml. Skipping manifest configuration.');
+        print(
+          '  [WARN] <application> tag not found in AndroidManifest.xml. Skipping manifest configuration.',
+        );
         return false;
       }
 
       final application = applicationNodes.first;
 
       // Find existing meta-data nodes for Naver SDK
-      final existingMetaDatas = application.findElements('meta-data').where((node) {
-        final name = node.getAttribute('android:name');
-        return name == 'com.naver.sdk.clientId' || 
-               name == 'com.naver.sdk.clientSecret' || 
-               name == 'com.naver.sdk.clientName';
-      }).toList();
+      final existingMetaDatas =
+          application.findElements('meta-data').where((node) {
+            final name = node.getAttribute('android:name');
+            return name == 'com.naver.sdk.clientId' ||
+                name == 'com.naver.sdk.clientSecret' ||
+                name == 'com.naver.sdk.clientName';
+          }).toList();
 
       if (existingMetaDatas.isNotEmpty) {
         if (askUser != null) {
-          final overwrite = await askUser('Naver configuration already exists in AndroidManifest.xml. Do you want to overwrite it?');
+          final overwrite = await askUser(
+            'Naver configuration already exists in AndroidManifest.xml. Do you want to overwrite it?',
+          );
           if (!overwrite) {
             print('  [SKIP] Left existing AndroidManifest.xml intact.');
             return success;
@@ -158,7 +189,9 @@ def naverClientSecret = localProperties.getProperty('naver.client_secret') ?: ""
       success = false;
     }
   } else {
-    print('  [WARN] android/app/src/main/AndroidManifest.xml not found. Skipping manifest configuration.');
+    print(
+      '  [WARN] android/app/src/main/AndroidManifest.xml not found. Skipping manifest configuration.',
+    );
     success = false;
   }
 

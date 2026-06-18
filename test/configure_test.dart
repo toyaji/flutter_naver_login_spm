@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, deprecated_member_use, prefer_interpolation_to_compose_strings, depend_on_referenced_packages
+
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as path;
@@ -12,9 +14,18 @@ void main() {
       tempDir = Directory.systemTemp.createTempSync('naver_login_test');
 
       // Setup fake Android structure
-      final androidAppSrcMain = Directory(path.join(tempDir.path, 'android', 'app', 'src', 'main'))..createSync(recursive: true);
-      File(path.join(androidAppSrcMain.parent.parent.parent.path, 'local.properties')).writeAsStringSync('sdk.dir=fake\n');
-      File(path.join(androidAppSrcMain.parent.parent.path, 'build.gradle.kts')).writeAsStringSync('''
+      final androidAppSrcMain = Directory(
+        path.join(tempDir.path, 'android', 'app', 'src', 'main'),
+      )..createSync(recursive: true);
+      File(
+        path.join(
+          androidAppSrcMain.parent.parent.parent.path,
+          'local.properties',
+        ),
+      ).writeAsStringSync('sdk.dir=fake\n');
+      File(
+        path.join(androidAppSrcMain.parent.parent.path, 'build.gradle.kts'),
+      ).writeAsStringSync('''
 plugins {
     id("com.android.application")
 }
@@ -24,7 +35,9 @@ android {
     }
 }
 ''');
-      File(path.join(androidAppSrcMain.path, 'AndroidManifest.xml')).writeAsStringSync('''
+      File(
+        path.join(androidAppSrcMain.path, 'AndroidManifest.xml'),
+      ).writeAsStringSync('''
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
         android:label="test_app"
@@ -34,13 +47,21 @@ android {
 ''');
 
       // Setup fake iOS structure
-      final iosFlutter = Directory(path.join(tempDir.path, 'ios', 'Flutter'))..createSync(recursive: true);
-      final iosRunner = Directory(path.join(tempDir.path, 'ios', 'Runner'))..createSync(recursive: true);
-      
-      File(path.join(iosFlutter.path, 'Debug.xcconfig')).writeAsStringSync('#include "Generated.xcconfig"\n');
-      File(path.join(iosFlutter.path, 'Release.xcconfig')).writeAsStringSync('#include "Generated.xcconfig"\n');
-      File(path.join(iosFlutter.parent.path, '.gitignore')).writeAsStringSync('build/\n');
-      
+      final iosFlutter = Directory(path.join(tempDir.path, 'ios', 'Flutter'))
+        ..createSync(recursive: true);
+      final iosRunner = Directory(path.join(tempDir.path, 'ios', 'Runner'))
+        ..createSync(recursive: true);
+
+      File(
+        path.join(iosFlutter.path, 'Debug.xcconfig'),
+      ).writeAsStringSync('#include "Generated.xcconfig"\n');
+      File(
+        path.join(iosFlutter.path, 'Release.xcconfig'),
+      ).writeAsStringSync('#include "Generated.xcconfig"\n');
+      File(
+        path.join(iosFlutter.parent.path, '.gitignore'),
+      ).writeAsStringSync('build/\n');
+
       File(path.join(iosRunner.path, 'Info.plist')).writeAsStringSync('''
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -68,14 +89,33 @@ android {
       );
 
       expect(success, isTrue);
-      final manifest = File(path.join(tempDir.path, 'android', 'app', 'src', 'main', 'AndroidManifest.xml')).readAsStringSync();
+      final manifest =
+          File(
+            path.join(
+              tempDir.path,
+              'android',
+              'app',
+              'src',
+              'main',
+              'AndroidManifest.xml',
+            ),
+          ).readAsStringSync();
       expect(manifest, contains('android:value="test_client_id"'));
       expect(manifest, contains('android:value="@string/client_secret"'));
     });
 
     test('Android Configurator respects user skipping overwrite', () async {
       // Inject dummy first
-      final manifestFile = File(path.join(tempDir.path, 'android', 'app', 'src', 'main', 'AndroidManifest.xml'));
+      final manifestFile = File(
+        path.join(
+          tempDir.path,
+          'android',
+          'app',
+          'src',
+          'main',
+          'AndroidManifest.xml',
+        ),
+      );
       manifestFile.writeAsStringSync('''
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
@@ -99,7 +139,9 @@ android {
     });
 
     test('iOS Configurator respects user skipping overwrite', () async {
-      final plistFile = File(path.join(tempDir.path, 'ios', 'Runner', 'Info.plist'));
+      final plistFile = File(
+        path.join(tempDir.path, 'ios', 'Runner', 'Info.plist'),
+      );
       plistFile.writeAsStringSync('''
 <plist version="1.0">
 <dict>
@@ -125,7 +167,9 @@ android {
     });
 
     test('iOS Configurator gracefully handles weirdly formatted XML', () async {
-      final plistFile = File(path.join(tempDir.path, 'ios', 'Runner', 'Info.plist'));
+      final plistFile = File(
+        path.join(tempDir.path, 'ios', 'Runner', 'Info.plist'),
+      );
       plistFile.writeAsStringSync('''
 <plist version="1.0">
   <dict>

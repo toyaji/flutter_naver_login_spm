@@ -100,9 +100,7 @@ class MethodChannelFlutterNaverLogin extends FlutterNaverLoginPlatform {
       // 여기서 내부 accessToken만 넘겨야 함!
       final accessTokenMap = result['accessToken'];
       if (accessTokenMap is Map) {
-        return NaverToken.fromMap(
-          Map<String, dynamic>.from(accessTokenMap),
-        );
+        return NaverToken.fromMap(Map<String, dynamic>.from(accessTokenMap));
       } else {
         return NaverToken.empty();
       }

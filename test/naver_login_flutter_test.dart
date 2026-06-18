@@ -101,10 +101,7 @@ void main() {
     final result = await fakePlatform.getCurrentAccessToken();
     expect(result.accessToken, 'mockAccessToken');
     expect(result.refreshToken, 'mockRefreshToken');
-    expect(
-      result.expiresAt,
-      _fixedExpireTime,
-    );
+    expect(result.expiresAt, _fixedExpireTime);
     expect(result.tokenType, 'bearer');
   });
 
