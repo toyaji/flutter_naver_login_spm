@@ -1,5 +1,5 @@
 # naver_login_flutter
-[![Build Status](https://img.shields.io/badge/pub-v2.1.1-success.svg)](https://pub.dev/packages/naver_login_flutter)
+[![Build Status](https://img.shields.io/badge/pub-v3.0.0-success.svg)](https://pub.dev/packages/naver_login_flutter)
 [![Build Status](https://img.shields.io/badge/naverAosSDK-v5.10.0-success.svg)](https://github.com/naver/naveridlogin-sdk-android)
 [![Build Status](https://img.shields.io/badge/naverIosSDK-v5.0.0-success.svg)](https://github.com/naver/naveridlogin-sdk-ios-swift)
 [![Build Status](https://img.shields.io/badge/build-passing-success.svg)](https://github.com/toyaji/naver_login_flutter)
@@ -11,11 +11,12 @@ A Flutter plugin for using the native Naver Login SDKs on Android and iOS.
 - for [AndroidX Flutter projects](https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility)
 
 ## Migration 
-[from pre-2.1.0 to 2.1.0](#migration-guide).
+- [Migrating from `flutter_naver_login` to `naver_login_flutter` 3.0.0](#migrating-from-flutter_naver_login-to-naver_login_flutter-300)
+- [from pre-2.1.0 to 2.1.0](#migration-guide)
 
 ## 📌 Fork Background & Purpose
 
-This repository is a **dedicated fork** of [yoonjaepark/flutter_naver_login](https://github.com/yoonjaepark/flutter_naver_login). 
+This repository is a **dedicated fork** of [yoonjaepark/flutter_naver_login](https://github.com/yoonjaepark/flutter_naver_login). The package has been renamed to `naver_login_flutter` to mark its independence and major structural improvements.
 
 ### Why this Fork exists?
 * **2026 CocoaPods Deprecation Response**: Apple and the Flutter ecosystem are phasing out CocoaPods (switching to read-only mode by the end of 2026). This plugin is refactored to fully support **Swift Package Manager (SPM)** native dependency mapping on iOS.
@@ -35,7 +36,7 @@ Add the following to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  naver_login_flutter: ^2.1.0
+  naver_login_flutter: ^3.0.0
 ```
 
 ### 2. Platform Setup
@@ -136,6 +137,39 @@ class AppDelegate: FlutterAppDelegate {
 ```
 
 ## Migration Guide
+
+### Migrating from `flutter_naver_login` to `naver_login_flutter` 3.0.0
+
+Since this package is a fork that transitioned to **Swift Package Manager (SPM)** and separated from the original `flutter_naver_login`, you must perform the following steps to migrate:
+
+#### 1. Update `pubspec.yaml`
+Remove the old package and add the new one:
+```yaml
+dependencies:
+  # Remove: flutter_naver_login: ^2.x.x
+  naver_login_flutter: ^3.0.0
+```
+
+#### 2. Update Dart Imports
+Find and replace all your import statements:
+```dart
+// Before
+import 'package:flutter_naver_login/flutter_naver_login.dart';
+
+// After
+import 'package:naver_login_flutter/naver_login_flutter.dart';
+```
+
+#### 3. iOS Clean Build (Crucial for SPM Transition)
+Because the old package used CocoaPods and the new one uses SPM natively, you **must** clean your iOS build cache to prevent conflicts:
+```bash
+cd ios
+pod deintegrate
+rm -rf Podfile.lock Pods/
+cd ..
+flutter clean
+flutter pub get
+```
 
 ### iOS Migration from pre-2.1.0 to 2.1.0
 
@@ -371,4 +405,4 @@ Please refer to our **[CONTRIBUTING.md](CONTRIBUTING.md)** for detailed instruct
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the BSD 2-Clause License - see the LICENSE file for details.

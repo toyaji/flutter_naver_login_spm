@@ -59,7 +59,7 @@ jobs:
 
       - name: Build Android Example
         working-directory: example/android
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleRelease
 
   ios_spm_build:
     name: iOS SPM Build Check
