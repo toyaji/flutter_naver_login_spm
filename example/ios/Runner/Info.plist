@@ -40,14 +40,14 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NidAppName</key>
-	<string>[YOUR_CLIENT_NAME]</string>
-	<key>NidClientID</key>
-	<string>[YOUR_CLIENT_ID]</string>
-	<key>NidClientSecret</key>
-	<string>[YOUR_CLIENT_SECRET]</string>
-	<key>NidUrlScheme</key>
-	<string>[YOUR_URL_SCHEME]</string>
+	
+	
+	
+	
+	
+	
+	
+	
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -88,5 +88,13 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NidClientID</key>
+	<string>CLI_ID_123</string>
+	<key>NidClientSecret</key>
+	<string>$(NAVER_CLIENT_SECRET)</string>
+	<key>NidAppName</key>
+	<string>Zelly CLI Test</string>
+	<key>NidUrlScheme</key>
+	<string>zellycli</string>
 </dict>
 </plist>

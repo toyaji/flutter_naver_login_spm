@@ -8,9 +8,11 @@ environment:
   flutter: ">=3.3.0"
 
 dependencies:
+  args: ^2.7.0
   flutter:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
+  xml: ^7.0.1
 
 dev_dependencies:
   flutter_test:
@@ -19,6 +21,9 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+executables:
+  configure:
 
 # The following section is specific to Flutter packages.
 flutter:
