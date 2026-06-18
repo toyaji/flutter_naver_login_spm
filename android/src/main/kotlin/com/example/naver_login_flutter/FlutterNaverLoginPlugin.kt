@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 
-import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.NidOAuth
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.util.NidOAuthCallback
 
@@ -94,7 +94,7 @@ class FlutterNaverLoginPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "naver_login_flutter")
         channel.setMethodCallHandler(this)
 
-        NaverIdLoginSDK.showDevelopersLog(true)
+        NidOAuth.setLogEnabled(true)
 
         try {
             context.packageName?.let { packageName ->
@@ -116,7 +116,7 @@ class FlutterNaverLoginPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
 
                     if (clientId != null && clientSecret != null && clientName != null) {
                         try {
-                            NaverIdLoginSDK.initialize(context, clientId, clientSecret, clientName)
+                            NidOAuth.initialize(context, clientId, clientSecret, clientName)
                             println("Naver Login SDK initialized successfully on plugin registration")
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -185,14 +185,14 @@ class FlutterNaverLoginPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
 
     private fun initSdk(result: Result, clientId: String, clientName: String, clientSecret: String) {
         try {
-            NaverIdLoginSDK.showDevelopersLog(true)
+            NidOAuth.setLogEnabled(true)
 
             println("Init SDK")
             println("- clientId: $clientId")
             println("- clientName: $clientName")
             println("- clientSecret: $clientSecret")
 
-            NaverIdLoginSDK.initialize(context, clientId, clientSecret, clientName)
+            NidOAuth.initialize(context, clientId, clientSecret, clientName)
             sendResult(NaverLoginStatus.LOGGED_OUT, null, null, result)
 
         } catch (e: Exception) {
@@ -208,13 +208,13 @@ class FlutterNaverLoginPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
     private suspend fun getCurrentAccount(result: Result) {
         // SDK 초기화 상태 확인
         try {
-            val state = NaverIdLoginSDK.getState()
+            val state = NidOAuth.getState()
         } catch (e: Exception) {
             sendError("SDK not initialized. Please call initSdk first.", result)
             return
         }
 
-        val accessToken = NaverIdLoginSDK.getAccessToken()
+        val accessToken = NidOAuth.getAccessToken()
 
         if (accessToken == null) {
             sendResult(NaverLoginStatus.LOGGED_OUT, null, null, result)
@@ -243,7 +243,7 @@ class FlutterNaverLoginPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
     private fun login(result: Result) {
         // SDK 초기화 상태 확인
         try {
-            val state = NaverIdLoginSDK.getState()
+            val state = NidOAuth.getState()
             println("Current SDK state: $state")
         } catch (e: Exception) {
             sendError("SDK not initialized. Please call initSdk first.", result)
@@ -254,9 +254,9 @@ class FlutterNaverLoginPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
 
         // 기존 토큰이 있다면 먼저 삭제 (user_cancel 문제 방지)
         try {
-            if (NaverIdLoginSDK.getAccessToken() != null) {
+            if (NidOAuth.getAccessToken() != null) {
                 println("Existing token found, logging out first")
-                NaverIdLoginSDK.logout(object : NidOAuthCallback {
+                NidOAuth.logout(object : NidOAuthCallback {
                     override fun onSuccess() {}
                     override fun onFailure(errorCode: String, errorDesc: String) {}
                 })
@@ -291,7 +291,7 @@ class FlutterNaverLoginPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
         }
 
         activity?.let {
-            NaverIdLoginSDK.authenticate(it, mOAuthLoginHandler)
+            NidOAuth.requestLogin(it, mOAuthLoginHandler)
         } ?: run {
             sendError("Activity is null", result)
             pendingResult = null
@@ -300,7 +300,7 @@ class FlutterNaverLoginPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
 
     private fun logout(result: Result) {
         try {
-            NaverIdLoginSDK.logout(object : NidOAuthCallback {
+            NidOAuth.logout(object : NidOAuthCallback {
                 override fun onSuccess() {
                     sendResult(NaverLoginStatus.LOGGED_OUT, null, null, result)
                 }
@@ -338,7 +338,7 @@ class FlutterNaverLoginPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
             }
         }
 
-        NidOAuthLogin().callDeleteTokenApi(mOAuthLoginHandler)
+        NidOAuth.disconnect(mOAuthLoginHandler)
     }
 
     private fun getCurrentAccessToken(result: Result) {
@@ -346,16 +346,16 @@ class FlutterNaverLoginPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
 
         // SDK 초기화 상태 확인
         try {
-            val state = NaverIdLoginSDK.getState()
+            val state = NidOAuth.getState()
         } catch (e: Exception) {
             sendError("SDK not initialized. Please call initSdk first.", result)
             return
         }
 
-        val accessToken = NaverIdLoginSDK.getAccessToken()
-        val refreshToken = NaverIdLoginSDK.getRefreshToken()
-        val expiresAt = NaverIdLoginSDK.getExpiresAt()
-        val tokenType = NaverIdLoginSDK.getTokenType()
+        val accessToken = NidOAuth.getAccessToken()
+        val refreshToken = NidOAuth.getRefreshToken()
+        val expiresAt = NidOAuth.getExpiresAt()
+        val tokenType = NidOAuth.getTokenType()
 
         if (accessToken == null) {
             sendResult(NaverLoginStatus.LOGGED_OUT, null, null, result)
@@ -373,7 +373,7 @@ class FlutterNaverLoginPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
     }
 
     private fun refreshAccessTokenWithRefreshToken(result: Result) {
-        val refreshToken = NaverIdLoginSDK.getRefreshToken()
+        val refreshToken = NidOAuth.getRefreshToken()
         if (refreshToken == null) {
             sendError("No refresh token available", result)
             return
@@ -381,10 +381,10 @@ class FlutterNaverLoginPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
 
         val mOAuthLoginHandler = object : NidOAuthCallback {
             override fun onSuccess() {
-                val accessToken = NaverIdLoginSDK.getAccessToken()
-                val newRefreshToken = NaverIdLoginSDK.getRefreshToken()
-                val expiresAt = NaverIdLoginSDK.getExpiresAt()
-                val tokenType = NaverIdLoginSDK.getTokenType()
+                val accessToken = NidOAuth.getAccessToken()
+                val newRefreshToken = NidOAuth.getRefreshToken()
+                val expiresAt = NidOAuth.getExpiresAt()
+                val tokenType = NidOAuth.getTokenType()
 
                 if (accessToken != null) {
                     val tokenInfo = mapOf(
@@ -415,13 +415,13 @@ class FlutterNaverLoginPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
     private fun isLoggedIn(result: Result) {
         // SDK 초기화 상태 확인
         try {
-            val state = NaverIdLoginSDK.getState()
+            val state = NidOAuth.getState()
         } catch (e: Exception) {
             sendError("SDK not initialized. Please call initSdk first.", result)
             return
         }
 
-        val accessToken = NaverIdLoginSDK.getAccessToken()
+        val accessToken = NidOAuth.getAccessToken()
         if (accessToken != null) {
             sendResult(NaverLoginStatus.LOGGED_IN, null, null, result)
         } else {
