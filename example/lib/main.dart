@@ -3,10 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:naver_login_flutter/naver_login_flutter.dart';
-import 'package:naver_login_flutter/interface/types/naver_token.dart';
-import 'package:naver_login_flutter/interface/types/naver_account_result.dart';
-import 'package:naver_login_flutter/interface/types/naver_login_result.dart';
-import 'package:naver_login_flutter/interface/types/naver_login_status.dart';
 
 final GlobalKey<ScaffoldMessengerState> snackbarKey =
     GlobalKey<ScaffoldMessengerState>();

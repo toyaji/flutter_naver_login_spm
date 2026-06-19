@@ -4,6 +4,11 @@ import 'package:naver_login_flutter/interface/types/naver_login_result.dart';
 import 'package:naver_login_flutter/interface/types/naver_token.dart';
 import 'naver_login_flutter_platform_interface.dart';
 
+export 'package:naver_login_flutter/interface/types/naver_account_result.dart';
+export 'package:naver_login_flutter/interface/types/naver_login_result.dart';
+export 'package:naver_login_flutter/interface/types/naver_login_status.dart';
+export 'package:naver_login_flutter/interface/types/naver_token.dart';
+
 /// 플러그인에서 사용할 메서드를 나타내는 열거형
 enum FlutterPluginMethod {
   logIn('logIn'), // 로그인 메서드
