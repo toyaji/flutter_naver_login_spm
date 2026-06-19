@@ -1,56 +1,27 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    
     <!-- 필수 권한 추가 -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     
-    <application
-        android:label="naver_login_flutter_example"
-        android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
-        android:usesCleartextTraffic="true">
-        
+    <application android:name="${applicationName}" android:label="naver_login_flutter_example" android:icon="@mipmap/ic_launcher" android:usesCleartextTraffic="true">
         <!-- 네이버 로그인 설정 -->
-        <meta-data
-            android:name="com.naver.sdk.clientId"
-            android:value="@string/client_id" />
-        <meta-data
-            android:name="com.naver.sdk.clientSecret"
-            android:value="@string/client_secret" />
-        <meta-data
-            android:name="com.naver.sdk.clientName"
-            android:value="@string/client_name" />
+        <meta-data android:name="com.naver.sdk.clientId" android:value="CLI_ID_123"/>
+        <meta-data android:name="com.naver.sdk.clientSecret" android:value="@string/client_secret"/>
+        <meta-data android:name="com.naver.sdk.clientName" android:value="Zelly CLI Test"/>
+
+        <activity android:name=".MainActivity" android:exported="true" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize">
             
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:launchMode="singleTop"
-            android:theme="@style/LaunchTheme"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-            android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustResize">
+            <meta-data android:name="io.flutter.embedding.android.NormalTheme" android:resource="@style/NormalTheme"/>
             
-            <meta-data
-              android:name="io.flutter.embedding.android.NormalTheme"
-              android:resource="@style/NormalTheme" />
-              
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-
         </activity>
-       
-            
-        <activity
-            android:name="com.navercorp.nid.oauth.view.NidOAuthBridgeActivity"
-            android:exported="false"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name="com.navercorp.nid.oauth.view.NidOAuthBridgeActivity" android:exported="false" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         
         <!-- Flutter 관련 메타데이터 (기존) -->
-        <meta-data
-            android:name="flutterEmbedding"
-            android:value="2" />
+        <meta-data android:name="flutterEmbedding" android:value="2"/>
     </application>
     
     <!-- 텍스트 프로세싱 쿼리 (기존) -->

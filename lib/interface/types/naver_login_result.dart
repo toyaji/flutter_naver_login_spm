@@ -49,7 +49,9 @@ class NaverLoginResult {
               )
               : null,
       status: NaverLoginStatus.values.firstWhere(
-        (e) => e.toString().split('.').last.toLowerCase() == map['status'].toString().toLowerCase(),
+        (e) =>
+            e.toString().split('.').last.toLowerCase() ==
+            map['status'].toString().toLowerCase(),
         orElse: () => NaverLoginStatus.error,
       ),
       errorMessage: map['errorMessage'],

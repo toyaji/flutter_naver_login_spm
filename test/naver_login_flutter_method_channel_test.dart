@@ -14,56 +14,52 @@ void main() {
     log = <MethodCall>[];
 
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(platform.methodChannel, (MethodCall methodCall) async {
-      log.add(methodCall);
+        .setMockMethodCallHandler(platform.methodChannel, (
+          MethodCall methodCall,
+        ) async {
+          log.add(methodCall);
 
-      switch (methodCall.method) {
-        case 'logIn':
-          return {
-            'status': 'loggedIn',
-            'accessToken': {
-              'accessToken': 'dummy_access_token',
-              'refreshToken': 'dummy_refresh_token',
-              'expiresAt': '2030-12-31T00:00:00.000',
-              'tokenType': 'bearer',
-            },
-            'account': {
-              'id': 'user123',
-              'name': 'Test User'
-            }
-          };
-        case 'logOut':
-        case 'logoutAndDeleteToken':
-          return null;
-        case 'getCurrentAccount':
-          return {
-            'account': {
-              'id': 'user123',
-              'name': 'Test User'
-            }
-          };
-        case 'isLoggedIn':
-          return true;
-        case 'getCurrentAccessToken':
-          return {
-            'accessToken': {
-              'accessToken': 'dummy_access_token',
-              'refreshToken': 'dummy_refresh_token',
-              'expiresAt': '2030-12-31T00:00:00.000',
-              'tokenType': 'bearer',
-            }
-          };
-        case 'refreshAccessTokenWithRefreshToken':
-          return {
-            'accessToken': 'new_access_token',
-            'refreshToken': 'new_refresh_token',
-            'expiresAt': '2030-12-31T00:00:00.000',
-            'tokenType': 'bearer',
-          };
-        default:
-          return null;
-      }
-    });
+          switch (methodCall.method) {
+            case 'logIn':
+              return {
+                'status': 'loggedIn',
+                'accessToken': {
+                  'accessToken': 'dummy_access_token',
+                  'refreshToken': 'dummy_refresh_token',
+                  'expiresAt': '2030-12-31T00:00:00.000',
+                  'tokenType': 'bearer',
+                },
+                'account': {'id': 'user123', 'name': 'Test User'},
+              };
+            case 'logOut':
+            case 'logoutAndDeleteToken':
+              return null;
+            case 'getCurrentAccount':
+              return {
+                'account': {'id': 'user123', 'name': 'Test User'},
+              };
+            case 'isLoggedIn':
+              return true;
+            case 'getCurrentAccessToken':
+              return {
+                'accessToken': {
+                  'accessToken': 'dummy_access_token',
+                  'refreshToken': 'dummy_refresh_token',
+                  'expiresAt': '2030-12-31T00:00:00.000',
+                  'tokenType': 'bearer',
+                },
+              };
+            case 'refreshAccessTokenWithRefreshToken':
+              return {
+                'accessToken': 'new_access_token',
+                'refreshToken': 'new_refresh_token',
+                'expiresAt': '2030-12-31T00:00:00.000',
+                'tokenType': 'bearer',
+              };
+            default:
+              return null;
+          }
+        });
   });
 
   tearDown(() {
@@ -88,7 +84,9 @@ void main() {
 
   test('logOutAndDeleteToken', () async {
     final result = await platform.logOutAndDeleteToken();
-    expect(log, <Matcher>[isMethodCall('logoutAndDeleteToken', arguments: null)]);
+    expect(log, <Matcher>[
+      isMethodCall('logoutAndDeleteToken', arguments: null),
+    ]);
     expect(result.status, NaverLoginStatus.loggedOut);
   });
 
@@ -106,22 +104,28 @@ void main() {
 
   test('getCurrentAccessToken', () async {
     final result = await platform.getCurrentAccessToken();
-    expect(log, <Matcher>[isMethodCall('getCurrentAccessToken', arguments: null)]);
+    expect(log, <Matcher>[
+      isMethodCall('getCurrentAccessToken', arguments: null),
+    ]);
     expect(result.accessToken, 'dummy_access_token');
   });
 
   test('refreshAccessTokenWithRefreshToken', () async {
     final result = await platform.refreshAccessTokenWithRefreshToken();
-    expect(log, <Matcher>[isMethodCall('refreshAccessTokenWithRefreshToken', arguments: null)]);
+    expect(log, <Matcher>[
+      isMethodCall('refreshAccessTokenWithRefreshToken', arguments: null),
+    ]);
     expect(result.accessToken, 'new_access_token');
   });
 
   group('PlatformException handling', () {
     setUp(() {
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockMethodCallHandler(platform.methodChannel, (MethodCall methodCall) async {
-        throw PlatformException(code: 'ERROR', message: 'Test Error');
-      });
+          .setMockMethodCallHandler(platform.methodChannel, (
+            MethodCall methodCall,
+          ) async {
+            throw PlatformException(code: 'ERROR', message: 'Test Error');
+          });
     });
 
     test('logIn handles exception', () async {

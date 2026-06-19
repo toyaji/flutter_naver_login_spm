@@ -12,7 +12,6 @@ A Flutter plugin for using the native Naver Login SDKs on Android and iOS.
 
 ## Migration 
 - [Migrating from `flutter_naver_login` to `naver_login_flutter` 3.0.0](#migrating-from-flutter_naver_login-to-naver_login_flutter-300)
-- [from pre-2.1.0 to 2.1.0](#migration-guide)
 
 ## 📌 Fork Background & Purpose
 
@@ -39,86 +38,24 @@ dependencies:
   naver_login_flutter: ^3.0.0
 ```
 
-### 2. Platform Setup
+### 2. Configure Native Projects (Recommended)
 
-#### Android
-1. Add the following to your `android/app/src/main/res/values/strings.xml`:
+`naver_login_flutter` provides an automated configuration tool that safely injects your API keys into the correct iOS and Android configuration files while properly isolating your **Client Secret** into gitignored local files.
 
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="client_id">[client_id]</string>
-    <string name="client_secret">[client_secret]</string>
-    <string name="client_name">[client_name]</string>
-</resources>
-```
+Run the interactive setup tool from the root of your Flutter project:
 
-2. Update your `android/app/src/main/AndroidManifest.xml`:
-
-```xml
-<application
-    android:name="io.flutter.app.FlutterApplication"
-    android:label="your_app_name"
-    android:icon="@mipmap/ic_launcher">
-    <meta-data
-        android:name="com.naver.sdk.clientId"
-        android:value="@string/client_id" />
-    <meta-data
-        android:name="com.naver.sdk.clientSecret"
-        android:value="@string/client_secret" />
-    <meta-data
-        android:name="com.naver.sdk.clientName"
-        android:value="@string/client_name" />
-</application>
-```
-
-3. Use `FlutterFragmentActivity` in your MainActivity:
-
-```kotlin
-import io.flutter.embedding.android.FlutterFragmentActivity
-
-class MainActivity: FlutterFragmentActivity()
-```
-
-#### iOS
-1. Install pods:
 ```bash
-cd ios
-pod install
+dart run naver_login_flutter:configure
 ```
 
-2. Update your `ios/Runner/Info.plist`:
-
-```xml
-<key>CFBundleURLTypes</key>
-<array>
-    <dict>
-        <key>CFBundleTypeRole</key>
-        <string>Editor</string>
-        <key>CFBundleURLSchemes</key>
-        <array>
-            <string>[UrlScheme]</string>
-        </array>
-    </dict>
-</array>
-
-<key>LSApplicationQueriesSchemes</key>
-<array>
-    <string>naversearchapp</string>
-    <string>naversearchthirdlogin</string>
-</array>
-
-<key>NidUrlScheme</key>
-<string>[UrlScheme]</string>
-<key>NidClientID</key>
-<string>[ConsumerKey]</string>
-<key>NidClientSecret</key>
-<string>[ConsumerSecret]</string>
-<key>NidAppName</key>
-<string>[ServiceAppName]</string>
+You can also pass arguments directly:
+```bash
+dart run naver_login_flutter:configure --app-name="Your App" --client-id="xxx" --client-secret="yyy" --url-scheme="zzz"
 ```
 
-3. Update your AppDelegate:
+> **Note:** If you prefer not to use the CLI and need to configure your projects manually, you must still follow our secure secret management approach. Do not hardcode your client secret directly into public configuration files. See the **[Manual Configuration Guide](doc/MANUAL_CONFIGURATION.md)** for step-by-step instructions.
+
+### 3. Update your AppDelegate (iOS Only):
 
 ```swift
 import NidThirdPartyLogin
@@ -135,6 +72,8 @@ class AppDelegate: FlutterAppDelegate {
     }
 }
 ```
+
+> **Warning for multiple SDKs:** If you are already using other login SDKs (like Kakao, Facebook, etc.) or deep-link plugins, you might already have the `application(_:open:options:)` method overridden. In this case, simply add the `if NidOAuth.shared.handleURL(url)` check to your existing method rather than duplicating the entire function, which will cause compilation errors.
 
 ## Migration Guide
 
@@ -171,81 +110,6 @@ flutter clean
 flutter pub get
 ```
 
-### iOS Migration from pre-2.1.0 to 2.1.0
-
-#### 1. Update Info.plist
-
-##### Before 2.1.0:
-```xml
-<key>naverServiceAppUrlScheme</key>
-<string>[UrlScheme]</string>
-<key>naverConsumerKey</key>
-<string>[ConsumerKey]</string>
-<key>naverConsumerSecret</key>
-<string>[ConsumerSecret]</string>
-<key>naverServiceAppName</key>
-<string>[ServiceAppName]</string>
-```
-
-##### After 2.1.0:
-```xml
-<key>NidUrlScheme</key>
-<string>[UrlScheme]</string>
-<key>NidClientID</key>
-<string>[ConsumerKey]</string>
-<key>NidClientSecret</key>
-<string>[ConsumerSecret]</string>
-<key>NidAppName</key>
-<string>[ServiceAppName]</string>
-```
-
-#### 2. Update AppDelegate
-
-##### Before 2.1.0:
-```swift
-import NaverThirdPartyLogin
-
-@UIApplicationMain
-class AppDelegate: FlutterAppDelegate {
-    override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        var applicationResult = false
-        if (!applicationResult) {
-           applicationResult = NaverThirdPartyLoginConnection.getSharedInstance().application(app, open: url, options: options)
-        }
-        if (!applicationResult) {
-           applicationResult = super.application(app, open: url, options: options)
-        }
-        return applicationResult
-    }
-}
-```
-
-##### After 2.1.0:
-```swift
-import NidThirdPartyLogin
-
-@UIApplicationMain
-class AppDelegate: FlutterAppDelegate {
-    override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        if NidOAuth.shared.handleURL(url) { // If the URL was passed from the Naver app
-          return true
-        }
-        
-        // Handle URLs coming from other apps
-        return super.application(app, open: url, options: options)
-    }
-}
-```
-
-#### 3. Migration Process
-
-```bash
-cd ios
-pod deintegrate
-pod install
-flutter clean
-flutter pub get
-```
 
 ## Usage
 
@@ -368,30 +232,25 @@ try {
 
 ### iOS Issues
 
-1. **CocoaPods Version Error**
-   - Solution: Update your Podfile to specify the minimum deployment target:
-   ```ruby
-   platform :ios, '13.0' // https://github.com/naver/naveridlogin-sdk-ios-swift
-   ```
-
-2. **Build System Error**
-   - Solution: In Xcode, go to File > Project Settings and change Build System to "Legacy Build System"
-
-3. **Linker Error**
-   - Solution: Clean the build folder and rebuild:
+1. **SPM Cache / Xcode Build Errors**
+   - Since this package uses Swift Package Manager (SPM) natively, you may occasionally encounter Xcode caching issues (e.g., missing module errors).
+   - Solution: Clear Xcode's DerivedData and the Flutter build cache:
    ```bash
-   cd ios
-   pod deintegrate
-   pod install
+   rm -rf ~/Library/Developer/Xcode/DerivedData
+   flutter clean
+   flutter pub get
+   cd ios && pod install && cd ..
    ```
+
+2. **Minimum iOS Version**
+   - The Naver Login SDK requires iOS 13.0 or higher.
+   - Solution: Ensure your `ios/Podfile` (if you have one for other plugins) is set to `platform :ios, '13.0'` or higher.
 
 ### Android Issues
 
-1. **Back Button Issue**
-   - Solution: Use the provided `MainActivity` code with `shouldAutomaticallyHandleOnBackPressed`
-
-2. **Proguard Issues**
-   - Solution: Add the provided Proguard rules to your `proguard-rules.pro` file
+1. **Missing Configuration Crashes**
+   - If the app crashes on launch or when attempting to log in, it is usually because the Naver API keys are missing from your `AndroidManifest.xml` or `build.gradle.kts`.
+   - Solution: Re-run the automated tool `dart run naver_login_flutter:configure` and verify that `android/local.properties` contains your `naver.client_secret`.
 
 ## 🤝 Contributing & AI Agent Collaboration
 

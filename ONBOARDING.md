@@ -37,47 +37,19 @@
    - Client Secret (`ConsumerSecret`)
    - URL Scheme (iOS 로그인 리다이렉션을 위함)
 
-### B. 로컬 연동 테스트 설정 (Android/iOS)
+### B. 자동 설정 (CLI) - 가장 권장하는 방법
 
-#### 1) iOS 설정 (`example/ios/Runner/Info.plist`)
-`example/ios/Runner/Info.plist`에 네이버 로그인 정보와 URL Scheme을 기입합니다.
-```xml
-<key>CFBundleURLTypes</key>
-<array>
-    <dict>
-        <key>CFBundleTypeRole</key>
-        <string>Editor</string>
-        <key>CFBundleURLSchemes</key>
-        <array>
-            <!-- 네이버 개발자 센터에 등록한 URL Scheme -->
-            <string>YOUR_URL_SCHEME</string>
-        </array>
-    </dict>
-</array>
-<key>LSApplicationQueriesSchemes</key>
-<array>
-    <string>naversearchapp</string>
-    <string>naversearchthirdlogin</string>
-</array>
-<key>NidUrlScheme</key>
-<string>YOUR_URL_SCHEME</string>
-<key>NidClientID</key>
-<string>YOUR_CLIENT_ID</string>
-<key>NidClientSecret</key>
-<string>YOUR_CLIENT_SECRET</string>
-<key>NidAppName</key>
-<string>YOUR_APP_NAME</string>
+네이버 개발자 센터에서 발급받은 정보를 준비한 뒤, 터미널에서 아래 명령어를 실행하면 `Info.plist`, `AndroidManifest.xml`, 환경변수 등 모든 네이티브 설정이 자동으로, 보안 원칙에 맞게 세팅됩니다.
+
+```bash
+dart run naver_login_flutter:configure
 ```
 
-#### 2) Android 설정 (`example/android/app/src/main/res/values/strings.xml`)
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="client_id">YOUR_CLIENT_ID</string>
-    <string name="client_secret">YOUR_CLIENT_SECRET</string>
-    <string name="client_name">YOUR_APP_NAME</string>
-</resources>
-```
+실행 후 화면의 안내에 따라 아래 정보를 순서대로 입력하세요:
+1. `Naver App Name`
+2. `Naver Client ID`
+3. `Naver Client Secret` (보안을 위해 로컬 파일에만 격리 저장됩니다)
+4. `iOS URL Scheme`
 
 ---
 

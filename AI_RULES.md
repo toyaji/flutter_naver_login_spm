@@ -17,6 +17,9 @@
 
 ## 🛑 2. 절대 금지 조항 (Critical Constraints)
 
+- **[FORBIDDEN] 임의의 Git 푸시 및 커밋 금지**:
+   - 작업 중 `git push` 명령어는 **절대** 사용자의 명시적인 허락 없이 실행해서는 안 됩니다.
+   - 로컬 작업물을 함부로 `git commit` 하거나 푸시하여 기존 작업 흐름을 방해하지 마십시오.
 - **[FORBIDDEN] 임의의 `pod` 명령어 실행 금지**:
    - `pod install`, `pod update`, `pod deintegrate` 명령을 AI가 단독으로 백그라운드에서 실행하지 마십시오.
    - 단, SPM 연동을 완전하게 초기화하기 위한 목적의 안내가 필요한 경우 사용자 승인 하에 실행하도록 제안만 가능합니다.

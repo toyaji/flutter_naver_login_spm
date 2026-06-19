@@ -15,10 +15,7 @@ void main() {
         'expiresAt': '2030-12-31T00:00:00',
         'tokenType': 'bearer',
       },
-      'account': {
-        'id': 'user123',
-        'name': 'Test User',
-      }
+      'account': {'id': 'user123', 'name': 'Test User'},
     };
 
     test('fromMap should parse valid map correctly', () {
@@ -26,20 +23,17 @@ void main() {
 
       expect(result.status, NaverLoginStatus.loggedIn);
       expect(result.errorMessage, isNull);
-      
+
       expect(result.accessToken, isNotNull);
       expect(result.accessToken!.accessToken, 'token123');
-      
+
       expect(result.account, isNotNull);
       expect(result.account!.id, 'user123');
       expect(result.account!.name, 'Test User');
     });
 
     test('fromMap should parse error status correctly', () {
-      final errorMap = {
-        'status': 'error',
-        'errorMessage': 'Login Failed',
-      };
+      final errorMap = {'status': 'error', 'errorMessage': 'Login Failed'};
       final result = NaverLoginResult.fromMap(errorMap);
 
       expect(result.status, NaverLoginStatus.error);
@@ -49,16 +43,21 @@ void main() {
     });
 
     test('toMap should convert object to map correctly', () {
-      final token = NaverToken(accessToken: 'token', refreshToken: 'refresh', expiresAt: '2030', tokenType: 'bearer');
+      final token = NaverToken(
+        accessToken: 'token',
+        refreshToken: 'refresh',
+        expiresAt: '2030',
+        tokenType: 'bearer',
+      );
       final account = NaverAccountResult(id: 'user', name: 'User');
-      
+
       final result = NaverLoginResult(
         status: NaverLoginStatus.loggedIn,
         accessToken: token,
         account: account,
         errorMessage: 'no error',
       );
-      
+
       final map = result.toMap();
       expect(map['status'], NaverLoginStatus.loggedIn.index);
       expect(map['errorMessage'], 'no error');
