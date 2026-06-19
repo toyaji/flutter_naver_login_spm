@@ -35,7 +35,7 @@ Add the following to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  naver_login_flutter: ^3.0.0
+  naver_login_flutter: ^3.0.1
 ```
 
 ### 2. Configure Native Projects (Recommended)
