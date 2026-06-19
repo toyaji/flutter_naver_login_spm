@@ -158,7 +158,9 @@ def naverClientSecret = localProperties.getProperty('naver.client_secret') ?: ""
           final parent = node.parent;
           if (parent != null) {
             final index = parent.children.indexOf(node);
-            if (index > 0 && parent.children[index - 1] is XmlText && parent.children[index - 1].value?.trim().isEmpty == true) {
+            if (index > 0 &&
+                parent.children[index - 1] is XmlText &&
+                parent.children[index - 1].value?.trim().isEmpty == true) {
               parent.children.removeAt(index - 1);
             }
             parent.children.remove(node);
@@ -166,14 +168,17 @@ def naverClientSecret = localProperties.getProperty('naver.client_secret') ?: ""
         }
 
         // Remove existing comments to prevent duplicates
-        final existingComments = application.descendants
-            .where((n) => n is XmlComment && n.value.contains('네이버 로그인 설정'))
-            .toList();
+        final existingComments =
+            application.descendants
+                .where((n) => n is XmlComment && n.value.contains('네이버 로그인 설정'))
+                .toList();
         for (var comment in existingComments) {
           final parent = comment.parent;
           if (parent != null) {
             final index = parent.children.indexOf(comment);
-            if (index > 0 && parent.children[index - 1] is XmlText && parent.children[index - 1].value?.trim().isEmpty == true) {
+            if (index > 0 &&
+                parent.children[index - 1] is XmlText &&
+                parent.children[index - 1].value?.trim().isEmpty == true) {
               parent.children.removeAt(index - 1);
             }
             parent.children.remove(comment);
@@ -213,7 +218,7 @@ def naverClientSecret = localProperties.getProperty('naver.client_secret') ?: ""
       int insertIndex = 0;
       application.children.insert(insertIndex++, XmlText('\n        '));
       application.children.insert(insertIndex++, XmlComment(' 네이버 로그인 설정 '));
-      
+
       for (var element in newElements) {
         application.children.insert(insertIndex++, XmlText('\n        '));
         application.children.insert(insertIndex++, element);

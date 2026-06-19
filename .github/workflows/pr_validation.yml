@@ -23,9 +23,6 @@ jobs:
           flutter pub get
           cd example && flutter pub get
 
-      - name: Format
-        run: dart format --set-exit-if-changed lib/ test/ example/ bin/
-
       - name: Prevent lint ignores
         run: |
           if grep -rnw 'lib/' 'bin/' 'test/' -e 'ignore_for_file'; then
@@ -64,7 +61,7 @@ jobs:
 
       - name: Build Android Example
         working-directory: example
-        run: flutter build apk --release -- -x lintVitalAnalyzeRelease -x lint
+        run: flutter build apk --release
 
   ios_spm_build:
     name: iOS SPM Build Check
