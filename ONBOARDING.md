@@ -9,7 +9,7 @@
 
 ## 📌 1. 패키지 아키텍처 및 목표
 
-본 패키지는 iOS의 `NaverThirdPartyLogin` SDK를 Swift Package Manager(SPM)를 통해 가져와 Flutter 앱과 연동되도록 지원하는 것을 최우선 목표로 합니다.
+본 패키지는 iOS의 `NidThirdPartyLogin` SDK(네이버 로그인 SDK v5.1.0 이상)를 Swift Package Manager(SPM)를 통해 가져와 Flutter 앱과 연동되도록 지원하는 것을 최우선 목표로 합니다.
 
 - **기존 문제**: CocoaPods와 SPM이 혼재될 때 Xcode 증분 빌드 캐시가 붕괴하여 빌드 성능이 크게 저하됨.
 - **해결 방안**: 기존 CocoaPods(`podspec` dependency) 방식에서 탈피하여 SPM(`Package.swift`) 기반 네이티브 SDK 연동을 지원하고, 빌드 속도 병목을 해결함.
@@ -19,10 +19,14 @@
 ## 📂 2. 주요 폴더 구조 안내
 
 - `lib/`: Dart 인터페이스 및 MethodChannel API 정의.
-- `ios/`: Swift 기반의 iOS 네이티브 브릿지 코드 (`Classes/FlutterNaverLoginPlugin.swift`).
+- `ios/naver_login_flutter/`: Swift 기반의 iOS 네이티브 브릿지 코드 (SPM 기반 구조)
+  - `Sources/naver_login_flutter/FlutterNaverLoginPlugin.swift`: iOS 플러그인 메인 브릿지
+  - `Package.swift`: Swift Package Manager 설정
+  - `naver_login_flutter.podspec`: CocoaPods 폴백 지원 (SPM이 primary)
 - `android/`: Kotlin 기반의 Android 네이티브 브릿지 코드.
 - `example/`: 이 패키지를 직접 연동하여 테스트할 수 있는 예제 Flutter 앱 프로젝트.
 - `test/`: Dart 단위 테스트 코드.
+- `doc/`: 기술 문서 및 설정 가이드 (SPM_INTEGRATION_STANDARDS.md, MANUAL_CONFIGURATION.md)
 
 ---
 

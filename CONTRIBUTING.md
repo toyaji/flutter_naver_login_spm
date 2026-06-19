@@ -86,8 +86,8 @@ flutter build ios --no-codesign
    - `flutter analyze` 결과 경고(Warning)나 린트 위반(Lints)이 단 하나도 없어야 합니다.
 2. **테스트 커버리지 유지 및 신규 테스트 작성**:
    - 신규 기능 추가 또는 버그 수정 시, 변경된 논리를 검증할 수 있는 단위 테스트(`test/` 하위) 혹은 통합 테스트 코드가 반드시 PR에 **동시 포함**되어야 합니다. 테스트 코드 누락 시 리뷰 단계에서 추가 작성이 요구됩니다.
-3. **SPM 및 CocoaPods 듀얼 빌드 정합성**:
-   - iOS 빌드에서 SPM으로 빌드할 때와 기존 CocoaPods 환경으로 빌드할 때 모두 정상 컴파일되어야 합니다.
-   - 조건부 컴파일 분기(`#if SWIFT_PACKAGE`)가 안전하게 구현되었는지 iOS 네이티브 소스코드를 면밀히 리뷰합니다.
+3. **Swift Package Manager (SPM) 빌드 검증**:
+   - iOS 빌드는 **Swift Package Manager(SPM)를 기본 기준으로 하며, CocoaPods는 레거시 호환성을 위한 폴백**입니다.
+   - SPM 환경에서 정상 컴파일되는지 우선 검증하고, 필요시 조건부 컴파일 분기(`#if SWIFT_PACKAGE`)의 안전성을 확인합니다.
 
 기여 과정 중 빌드 이슈나 의문점이 생긴다면 언제든지 `Issues` 탭을 통해 의견을 올려주시기 바랍니다. 감사합니다!

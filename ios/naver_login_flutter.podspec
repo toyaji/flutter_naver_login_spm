@@ -4,14 +4,15 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'naver_login_flutter'
-  s.version          = '0.0.1'
-  s.summary          = 'A new Flutter plugin project.'
+  s.version          = '3.0.1'
+  s.summary          = 'A Flutter plugin for using the native Naver Login SDKs on Android and iOS.'
   s.description      = <<-DESC
-A new Flutter plugin project.
+A Flutter plugin for using the native Naver Login SDKs on Android and iOS.
+Provides Swift Package Manager (SPM) integration for iOS and Gradle integration for Android.
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://github.com/toyaji/naver_login_flutter'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'toyaji' => 'toyaji83@gmail.com' }
   s.source           = { :path => '.' }
   s.source_files = 'naver_login_flutter/Sources/naver_login_flutter/**/*'
   s.dependency 'Flutter'
