@@ -1,3 +1,10 @@
+## 3.0.1
+* **iOS & SPM 마이그레이션**: iOS를 Swift Package Manager(SPM) 전용으로 완전히 마이그레이션하고 CocoaPods 의존성을 제거했습니다. iOS `UIScene` 생명주기를 완벽 지원하여 로그인 콜백이 동작하지 않던 버그를 수정하고 URL Scheme 자동 구성 로직을 개선했습니다.
+* **설정 자동화 CLI 도입**: 네이버 SDK 연동 설정을 대화형으로 자동 구성해주며, Client Secret 등 민감 정보를 분리 관리해주는 CLI 설정 도구(`dart run naver_login_flutter:configure`)를 새롭게 지원합니다.
+* **Android 빌드 도구 현대화**: Gradle, Android Gradle Plugin, NDK, Kotlin 버전을 최신으로 업그레이드하고 빌드 과정을 최적화했습니다. AndroidManifest placeholder 관련 린트 및 설정 문제를 수정했습니다.
+* **보안 강화 및 예제 앱 정리**: 예제 앱 내부의 민감 정보(액세스 토큰) 로그 노출을 차단하고, 불필요한 설정 파일 및 구조를 단순화했습니다.
+* **품질 관리 및 CI 안정화**: 민감 정보 노출을 감지하는 workflow 추가, 정적 분석 lint ignore 규칙 무관용 적용, 전체 테스트 코드 및 구성 템플릿 린트 에러를 완전히 해결하여 빌드 및 배포 신뢰도를 높였습니다.
+
 ## 3.0.0
 * **New Package Name**: Renamed to `naver_login_flutter` and officially separated from the unmaintained `flutter_naver_login`. (Note: You must update all your `import` statements!)
 * **SPM Support**: Migrated iOS to support both Swift Package Manager (SPM) and CocoaPods dual support structure.

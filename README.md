@@ -1,7 +1,7 @@
 # naver_login_flutter
-[![Build Status](https://img.shields.io/badge/pub-v3.0.0-success.svg)](https://pub.dev/packages/naver_login_flutter)
-[![Build Status](https://img.shields.io/badge/naverAosSDK-v5.10.0-success.svg)](https://github.com/naver/naveridlogin-sdk-android)
-[![Build Status](https://img.shields.io/badge/naverIosSDK-v5.0.0-success.svg)](https://github.com/naver/naveridlogin-sdk-ios-swift)
+[![pub package](https://img.shields.io/pub/v/naver_login_flutter.svg)](https://pub.dev/packages/naver_login_flutter)
+[![Build Status](https://img.shields.io/badge/naverAosSDK-v5.11.2-success.svg)](https://github.com/naver/naveridlogin-sdk-android)
+[![Build Status](https://img.shields.io/badge/naverIosSDK-v5.1.0-success.svg)](https://github.com/naver/naveridlogin-sdk-ios-swift)
 [![Build Status](https://img.shields.io/badge/build-passing-success.svg)](https://github.com/toyaji/naver_login_flutter)
 
 A Flutter plugin for using the native Naver Login SDKs on Android and iOS.
@@ -11,7 +11,7 @@ A Flutter plugin for using the native Naver Login SDKs on Android and iOS.
 - for [AndroidX Flutter projects](https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility)
 
 ## Migration 
-- [Migrating from `flutter_naver_login` to `naver_login_flutter` 3.0.0](#migrating-from-flutter_naver_login-to-naver_login_flutter-300)
+- [Migrating from `flutter_naver_login` to `naver_login_flutter` 3.x](#migrating-from-flutter_naver_login-to-naver_login_flutter-3x)
 
 ## 📌 Fork Background & Purpose
 
@@ -59,7 +59,7 @@ dart run naver_login_flutter:configure --app-name="Your App" --client-id="xxx" -
 
 ## Migration Guide
 
-### Migrating from `flutter_naver_login` to `naver_login_flutter` 3.0.0
+### Migrating from `flutter_naver_login` to `naver_login_flutter` 3.x
 
 Since this package is a fork that transitioned to **Swift Package Manager (SPM)** and separated from the original `flutter_naver_login`, you must perform the following steps to migrate:
 
