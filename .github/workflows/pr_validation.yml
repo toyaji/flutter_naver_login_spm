@@ -5,7 +5,34 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
+  check_example_config:
+    name: Check Example Config Files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            example/android/app/src/main/AndroidManifest.xml
+            example/ios/Runner/Info.plist
+
+      - name: Verify no unauthorized changes
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "::error::You have modified the example configuration files. Please revert these changes to avoid leaking your personal Naver API keys."
+          echo "Files modified: ${{ steps.changed-files.outputs.all_changed_files }}"
+          exit 1
+
   lint_and_test:
     name: Lint & Test
     runs-on: ubuntu-latest
@@ -88,3 +115,21 @@ jobs:
           rm -rf Podfile.lock Pods/
           cd ..
           flutter build ios --no-codesign
+
+  pub_publish_check:
+    name: Pub.dev Publishing Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Verify pub.dev publishing
+        run: flutter pub publish --dry-run
