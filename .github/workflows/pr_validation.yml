@@ -88,3 +88,21 @@ jobs:
           rm -rf Podfile.lock Pods/
           cd ..
           flutter build ios --no-codesign
+
+  pub_publish_check:
+    name: Pub.dev Publishing Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Verify pub.dev publishing
+        run: flutter pub publish --dry-run
