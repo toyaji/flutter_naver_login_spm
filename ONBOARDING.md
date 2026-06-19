@@ -97,7 +97,17 @@ dart run naver_login_flutter:configure
 
 ---
 
-## 🔍 5. 이슈 및 문제 해결 (Troubleshooting)
+## 📦 5. 패키지 사용법 (Usage)
+
+패키지를 사용할 때는 개별 데이터 타입(Result, Token, Status 등)을 따로 import할 필요 없이, 메인 패키지 파일 하나만 import하여 모든 퍼블릭 API에 접근할 수 있습니다.
+
+```dart
+import 'package:naver_login_flutter/naver_login_flutter.dart';
+```
+
+---
+
+## 🔍 6. 이슈 및 문제 해결 (Troubleshooting)
 
 - **iOS 빌드 실패 (SPM Package Resolve 오류)**:
   Xcode 캐시 충돌이 발생할 경우 다음 명령을 통해 캐시를 완전히 초기화한 후 다시 빌드합니다.
@@ -110,3 +120,4 @@ dart run naver_login_flutter:configure
 - **로그인 성공 후 앱 복귀 안 됨**:
   - `Info.plist`에 입력한 `CFBundleURLSchemes`와 네이버 개발자 센터에 등록한 Scheme 값이 동일한지 재확인하십시오.
   - `AppDelegate.swift`에 `NidOAuth.shared.handleURL(url)`이 구현되어 있는지 확인하십시오.
+

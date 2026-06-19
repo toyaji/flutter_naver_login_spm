@@ -35,7 +35,7 @@ Add the following to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  naver_login_flutter: ^3.0.2
+  naver_login_flutter: ^3.0.3
 ```
 
 ### 2. Configure Native Projects (Recommended)
@@ -94,6 +94,12 @@ flutter pub get
 
 
 ## Usage
+
+You only need to import a single file to access all public classes, enums, and methods:
+
+```dart
+import 'package:naver_login_flutter/naver_login_flutter.dart';
+```
 
 ### Types
 
