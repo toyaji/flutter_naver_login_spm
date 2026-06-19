@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:logger/logger.dart';
 
+import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:naver_login_flutter/naver_login_flutter.dart';
 import 'package:naver_login_flutter/interface/types/naver_token.dart';
 import 'package:naver_login_flutter/interface/types/naver_account_result.dart';
@@ -193,8 +193,8 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       final NaverToken res = await FlutterNaverLogin.getCurrentAccessToken();
       logger.i('buttonTokenPressed: NaverToken isValid: ${res.isValid()}');
-      logger.i('buttonTokenPressed: NaverToken accessToken: ${res.accessToken}');
-      
+      // 보안: access token 원문은 로그에 남기지 않는다 (CI/크래시/공유 기기 로그 유출 방지)
+
       _showToast('토큰 정보 가져오기 성공');
       
       setState(() {
